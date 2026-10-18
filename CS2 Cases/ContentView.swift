@@ -8,17 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showInventory = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            CaseSelectionView()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showInventory = true
+                        } label: {
+                            Label("Inventory", systemImage: "shippingbox.fill")
+                                .labelStyle(.titleAndIcon)
+                                .font(.cs(16, .semibold))
+                        }
+                    }
+                }
         }
-        .padding()
+        .tint(.white)
+        .sheet(isPresented: $showInventory) {
+            InventoryView()
+        }
     }
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
     ContentView()
+        .environment(InventoryStore())
 }
